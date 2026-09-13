@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111827"
+    >
+
+    <title>Kalkulator Shopee</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <!-- ========================================= -->
+    <!-- JUDUL -->
+    <!-- ========================================= -->
+
+    <h1>Kalkulator Shopee</h1>
+
+    <p class="subtitle">
+        Kalkulator Harga, Profit & ROAS
+    </p>
+
+
+
+    <!-- ========================================= -->
+    <!-- PENGATURAN -->
+    <!-- ========================================= -->
+
+    <section class="card">
+
+        <h2>⚙️ Pengaturan</h2>
+
+
+        <label for="potonganShopee">
+            Potongan Shopee (%)
+        </label>
+
+        <input
+            type="number"
+            id="potonganShopee"
+            step="0.01"
+        >
+
+
+        <label for="biayaProses">
+            Biaya Proses
+        </label>
+
+        <input
+            type="number"
+            id="biayaProses"
+        >
+
+
+        <label for="packing">
+            Packing / Unit
+        </label>
+
+        <input
+            type="number"
+            id="packing"
+        >
+
+
+        <label for="riskReserve">
+            Risk Reserve (%)
+        </label>
+
+        <input
+            type="number"
+            id="riskReserve"
+            step="0.01"
+        >
+
+
+        <label for="targetProfit">
+            Target Profit (%)
+        </label>
+
+        <input
+            type="number"
+            id="targetProfit"
+            step="0.01"
+        >
+
+
+        <label for="efektivitasIklan">
+            Efektivitas Iklan (%)
+        </label>
+
+        <input
+            type="number"
+            id="efektivitasIklan"
+            step="0.01"
+        >
+
+
+        <label for="roasAcuan">
+            ROAS Aktual Acuan
+        </label>
+
+        <input
+            type="number"
+            id="roasAcuan"
+            step="0.01"
+        >
+
+    </section>
+
+
+
+    <!-- ========================================= -->
+    <!-- INPUT -->
+    <!-- ========================================= -->
+
+    <section class="card">
+
+        <h2>Input</h2>
+
+
+
+        <!-- PRODUK -->
+
+        <label for="produk">
+            Cari Produk
+        </label>
+
+        <input
+            type="text"
+            id="produk"
+            list="daftarProduk"
+            oninput="pilihProduk()"
+            placeholder="Cari SKU atau nama produk"
+            autocomplete="off"
+        >
+
+        <datalist id="daftarProduk"></datalist>
+
+
+
+        <!-- HARGA ETALASE -->
+
+        <label for="hargaEtalase">
+            Harga Etalase
+        </label>
+
+        <input
+            type="number"
+            id="hargaEtalase"
+            placeholder="Contoh: 105000"
+        >
+
+
+
+        <!-- VOUCHER -->
+
+        <label for="voucher">
+            Voucher Seller
+        </label>
+
+        <input
+            type="number"
+            id="voucher"
+            placeholder="Contoh: 5000"
+        >
+
+
+
+        <!-- HPP MASTER -->
+
+        <label for="hppMaster">
+            HPP Master
+        </label>
+
+        <input
+            type="number"
+            id="hppMaster"
+            readonly
+        >
+
+
+
+        <!-- HPP AKTIF -->
+
+        <label for="hpp">
+            HPP Aktif
+        </label>
+
+        <input
+            type="number"
+            id="hpp"
+            placeholder="HPP aktif"
+        >
+
+
+        <!-- INDIKATOR HPP -->
+
+        <div
+            id="indikatorHPP"
+            style="
+                font-size:12px;
+                margin-top:6px;
+                margin-bottom:10px;
+            "
+        ></div>
+
+
+
+        <!-- TOMBOL HPP -->
+
+        <div
+            style="
+                display:flex;
+                gap:8px;
+            "
+        >
+
+            <button
+                type="button"
+                onclick="simpanHPP()"
+                style="flex:1;"
+            >
+                SIMPAN HPP
+            </button>
+
+
+            <button
+                type="button"
+                onclick="kembalikanHPPMaster()"
+                style="flex:1;"
+            >
+                KEMBALIKAN KE MASTER
+            </button>
+
+        </div>
+
+
+
+        <!-- KELOLA HPP -->
+
+        <button
+            type="button"
+            onclick="tampilkanKelolaHPP()"
+            style="
+                width:100%;
+                margin-top:8px;
+            "
+        >
+            KELOLA HPP SEMUA PRODUK
+        </button>
+
+
+
+        <!-- ===================================== -->
+        <!-- PANEL KELOLA HPP -->
+        <!-- ===================================== -->
+
+        <div
+            id="kelolaHPP"
+            style="
+                display:none;
+                margin-top:15px;
+                padding:12px;
+                border:1px solid #ddd;
+                border-radius:8px;
+            "
+        >
+
+            <h3 style="margin-top:0;">
+                Kelola HPP
+            </h3>
+
+
+
+            <!-- CARI HPP -->
+
+            <input
+                type="text"
+                id="cariHPP"
+                placeholder="Cari SKU atau nama produk..."
+                autocomplete="off"
+            >
+
+
+
+            <!-- ================================= -->
+            <!-- BACKUP HPP -->
+            <!-- ================================= -->
+
+            <div
+                style="
+                    display:flex;
+                    gap:8px;
+                    margin-top:10px;
+                    margin-bottom:10px;
+                "
+            >
+
+                <button
+                    type="button"
+                    onclick="exportHPP()"
+                    style="flex:1;"
+                >
+                    EXPORT HPP
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="importHPP()"
+                    style="flex:1;"
+                >
+                    IMPORT HPP
+                </button>
+
+
+                <input
+                    type="file"
+                    id="fileImportHPP"
+                    accept=".json"
+                    style="display:none;"
+                    onchange="prosesImportHPP(event)"
+                >
+
+            </div>
+
+
+
+            <!-- ================================= -->
+            <!-- DAFTAR HPP -->
+            <!-- ================================= -->
+
+            <div
+                id="daftarHPP"
+                style="
+                    margin-top:10px;
+                "
+            ></div>
+
+        </div>
+
+
+
+        <!-- ===================================== -->
+        <!-- ROAS SIMULASI -->
+        <!-- ===================================== -->
+
+        <label for="roas">
+            ROAS Simulasi
+        </label>
+
+        <input
+            type="number"
+            id="roas"
+            step="0.01"
+            placeholder="Contoh: 10"
+        >
+
+
+
+        <!-- HITUNG -->
+
+        <button
+            type="button"
+            onclick="hitung()"
+        >
+            HITUNG
+        </button>
+
+    </section>
+
+
+
+    <!-- ========================================= -->
+    <!-- HASIL -->
+    <!-- ========================================= -->
+
+    <section class="card">
+
+<h2>Hasil</h2>
+
+<div class="hasil-row">
+    <span>Harga Efektif</span>
+    <strong id="hargaEfektif">Rp0</strong>
+</div>
+
+<h2 style="margin-top:30px;">
+    Profit & ROAS
+</h2>
+
+<div class="hasil-row">
+    <span>Profit Sebelum Iklan</span>
+    <strong id="profitSebelumIklan">Rp0</strong>
+</div>
+
+<div class="hasil-row">
+    <span>BEP ROAS</span>
+    <strong id="bepRoas">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>Profit Aktual</span>
+    <strong id="profitAktual">Rp0</strong>
+</div>
+
+<div class="hasil-row">
+    <span>ROAS Target Profit</span>
+    <strong id="roasTargetProfit">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>ROAS Target Aplikasi</span>
+    <strong id="roasTargetAplikasi">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>Margin Profit Aktual</span>
+    <strong id="marginAktual">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>Status Profit</span>
+    <strong id="statusProfit">-</strong>
+</div>
+
+<h2 style="margin-top:30px;">
+    Analisis Harga
+</h2>
+
+<div class="hasil-row">
+    <span>Harga Target</span>
+    <strong id="hargaTarget">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>Harga Target Bulat</span>
+    <strong id="hargaTargetBulat">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>Harga Rekomendasi</span>
+    <strong id="hargaRekomendasi">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>Harga Pasar</span>
+    <input
+        type="number"
+        id="hargaPasar"
+        placeholder="Opsional"
+    >
+</div>
+
+<div class="hasil-row">
+    <span>Selisih dengan Pasar</span>
+    <strong id="selisihHarga">-</strong>
+</div>
+
+<div class="hasil-row">
+    <span>Posisi Harga</span>
+    <strong id="statusHarga">-</strong>
+</div>
+
+<h2 style="margin-top:30px;">
+    Simulasi ROAS
+</h2>
+
+<div id="simulasiRoas"></div>
+
+
+    </section>
+
+
+</div>
+
+
+
+<!-- ========================================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================================= -->
+
+<script src="produk.js"></script>
+
+<script src="app.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(() => {
+                console.log("Service Worker aktif");
+            })
+            .catch(error => {
+                console.error("Service Worker gagal:", error);
+            });
+    });
+}
+</script>
+
+</body>
